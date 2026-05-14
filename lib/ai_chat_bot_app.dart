@@ -15,7 +15,7 @@ class AiChatBotApp extends StatelessWidget {
         providers: ProviderConfig.providers,
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          title: 'Mediviora App',
+          title: 'Ai Chat Bot App',
          routerConfig: AppRoutes.router,
           theme: ThemeData(
             textTheme: GoogleFonts.ubuntuTextTheme(),

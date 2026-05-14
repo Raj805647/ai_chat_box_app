@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../routes/route_names.dart';
-import '../../../widget/help_widget.dart';
-import '../../../widget/ui_design.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors.dart';
 import 'onboarding_provider.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -12,191 +11,198 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<OnboardingProvider>();
-    final step = provider.steps[provider.currentStep];
+
     return Scaffold(
+      backgroundColor: AppColors.appMode,
       body: Stack(
         children: [
-        appBackground(),
+          /// TOP GLOW
+          Positioned(
+            top: -120,
+            left: -50,
+            right: -50,
+            child: Container(
+              height: 260,
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.primary.withOpacity(0.25),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          /// BOTTOM GLOW
+          Positioned(
+            bottom: -150,
+            left: -80,
+            right: -80,
+            child: Container(
+              height: 300,
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  colors: [
+                    Colors.purpleAccent.withOpacity(0.20),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+          ),
+
           SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () => provider.navigateAndClearStack(context, RouteNames.signInScreen),
-                      child: const Text(
-                        "Skip",
-                        style: TextStyle(
-                          color: Color(0xFF64748B),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 500),
-                      child: Column(
-                        key: ValueKey(provider.currentStep),
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TweenAnimationBuilder(
-                            tween: Tween(begin: 0.8, end: 1.0),
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeOutBack,
-                            builder: (context, value, child) {
-                              return Transform.scale(
-                                scale: value,
-                                child: child,
-                              );
-                            },
-                            child: Container(
-                              width: 260,
-                              height: 260,
-                              padding: const EdgeInsets.all(4),
+            child: Column(
+              children: [
+                Expanded(
+                  child: PageView.builder(
+                    controller: provider.pageController,
+                    itemCount: provider.onboardingData.length,
+                    onPageChanged: provider.onPageChanged,
+                    itemBuilder: (context, index) {
+                      final item = provider.onboardingData[index];
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 180,
+                              width: 180,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(48),
-                                gradient: LinearGradient(colors: step['gradient']),
+                                borderRadius: BorderRadius.circular(40),
+                                gradient:
+                                AppColors.customLinearGradient(),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: step['gradient'].first.withOpacity(0.3),
-                                    blurRadius: 30,
-                                    spreadRadius: 5,
+                                    blurRadius: 40,
+                                    color: AppColors.primary
+                                        .withOpacity(0.45),
                                   ),
                                 ],
                               ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.95),
-                                  borderRadius: BorderRadius.circular(44),
-                                ),
-                                child: Center(
-                                  child: TweenAnimationBuilder(
-                                    tween: Tween(begin: 0.9, end: 1.0),
-                                    duration: const Duration(seconds: 2),
-                                    curve: Curves.easeInOut,
-                                    builder: (context, value, child) {
-                                      return Transform.scale(
-                                        scale: value,
-                                        child: child,
-                                      );
-                                    },
-                                    child: Text(
-                                      step['illustration'],
-                                      style: const TextStyle(fontSize: 90),
-                                    ),
-                                  ),
+                              child: Center(
+                                child: Text(
+                                  item['emoji'],
+                                  style: const TextStyle(fontSize: 80),
                                 ),
                               ),
                             ),
-                          ),
-                          
-                         spaceHeight(50),
-                          Text(
-                            step['title'],
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF0F172A),
+
+                            const SizedBox(height: 50),
+
+                            ShaderMask(
+                              shaderCallback: (bounds) {
+                                return const LinearGradient(
+                                  colors: [
+                                    Color(0xff00E5FF),
+                                    Color(0xff7C4DFF),
+                                    Color(0xffFF4081),
+                                  ],
+                                ).createShader(bounds);
+                              },
+                              child: Text(
+                                item['title'],
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
-                          ),
-                         spaceHeight(20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Text(
-                              step['description'],
+
+                            const SizedBox(height: 18),
+
+                            Text(
+                              item['description'],
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 18,
+                              style: TextStyle(
+                                fontSize: 15,
                                 height: 1.6,
-                                color: Color(0xFF64748B),
+                                color: Colors.white.withOpacity(0.7),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(provider.steps.length, (index) {
-                      final isActive = index == provider.currentStep;
+                ),
+
+                /// INDICATOR
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    provider.onboardingData.length,
+                        (index) {
+                      final isActive =
+                          provider.currentIndex == index;
+
                       return AnimatedContainer(
-                        duration: const Duration(milliseconds: 400),
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: isActive ? 40 : 24,
-                        height: 6,
+                        duration:
+                        const Duration(milliseconds: 300),
+                        margin:
+                        const EdgeInsets.symmetric(horizontal: 4),
+                        height: 8,
+                        width: isActive ? 26 : 8,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: isActive
-                              ? const LinearGradient(
-                                  colors: [
-                                    Color(0xFF00D1FF),
-                                    Color(0xFF8B7CFF),
-                                  ],
-                                )
+                              ? AppColors.customLinearGradient()
                               : null,
-                          color: isActive ? null : Colors.grey.shade300,
+                          color:
+                          isActive ? null : Colors.white24,
                         ),
                       );
-                    }),
+                    },
                   ),
-                 spaceHeight(40),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 58,
-                    child: ElevatedButton(
-                      onPressed: () => provider.nextPage(context),
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        elevation: 8,
-                        backgroundColor: Colors.transparent,
-                        shadowColor: const Color(0xFF00D1FF).withOpacity(0.4),
-                      ),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFF00D1FF), Color(0xFF8B7CFF)],
+                ),
+
+                const SizedBox(height: 40),
+
+                Padding(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 24),
+                  child: GestureDetector(
+                    onTap: () {
+                      provider.nextPage(context);
+                    },
+                    child: Container(
+                      height: 58,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        gradient:
+                        AppColors.customLinearGradient(),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 25,
+                            color: AppColors.primary
+                                .withOpacity(0.45),
                           ),
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                provider.currentStep < provider.steps.length - 1
-                                    ? "Continue"
-                                    : "Get Started",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Icon(
-                                provider.currentStep < provider.steps.length - 1
-                                    ? Icons.arrow_forward_ios
-                                    : Icons.check,
-                                size: 18,
-                                color: Colors.white,
-                              ),
-                            ],
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          provider.currentIndex ==
+                              provider.onboardingData.length - 1
+                              ? "Get Started"
+                              : "Continue",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
                     ),
                   ),
-                 spaceHeight(30),
-                ],
-              ),
+                ),
+
+                const SizedBox(height: 40),
+              ],
             ),
           ),
         ],

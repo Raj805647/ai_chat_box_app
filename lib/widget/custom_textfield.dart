@@ -4,6 +4,7 @@ Widget customTextField({
   required String label,
   required String hintText,
   required TextEditingController controller,
+  VoidCallback? onTap,
 
   IconData? prefixIcon,
   Widget? suffixIcon,
@@ -30,7 +31,7 @@ Widget customTextField({
         controller: controller,
         obscureText: obscureText,
         keyboardType: keyboardType,
-
+        onTap: onTap,
         decoration: InputDecoration(
           hintText: hintText,
 

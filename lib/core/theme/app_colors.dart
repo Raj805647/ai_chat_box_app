@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 class AppColors {
 
-  static const Color primary = Color(0xFF1A73E8);
+  static const Color primary =   Color(0xff9B4FDC);
+  static const Color appMode =   Color(0xff070B14);
 
-  static const Color secondary = Color(0xFF0F9D58);
+  static const Color secondary = Color(0xffAE31B1);
 
   static const Color background = Color(0xFFF5F5F5);
 
@@ -14,12 +15,11 @@ class AppColors {
 
   static const Color error = Colors.red;
 
-  static LinearGradient customLinearGradient() {
+  static Gradient customLinearGradient() {
     return LinearGradient(
       colors: [
         Color(0xff7F00FF),
         Color(0xffE100FF),
-        Color(0xff00C6FF),
       ],
     );
   }
