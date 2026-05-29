@@ -88,8 +88,6 @@ class AiChattingScreen extends StatelessWidget {
 
             spaceHeight(20),
 
-            /// ---------------- CHAT LIST ----------------
-
             Expanded(
               child: ListView.builder(
                 controller:
@@ -209,8 +207,6 @@ class AiChattingScreen extends StatelessWidget {
                 },
               ),
             ),
-
-            /// ---------------- INPUT AREA ----------------
 
             Padding(
               padding: EdgeInsets.only(
@@ -340,42 +336,4 @@ class AiChattingScreen extends StatelessWidget {
     );
   }
 
-  Widget _glassButton({
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: ClipRRect(
-        borderRadius:
-        BorderRadius.circular(16),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 15,
-            sigmaY: 15,
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.white
-                  .withOpacity(0.05),
-              borderRadius:
-              BorderRadius.circular(
-                16,
-              ),
-              border: Border.all(
-                color: Colors.white
-                    .withOpacity(0.08),
-              ),
-            ),
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: 20,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }

@@ -36,16 +36,16 @@ class SignUpScreen extends StatelessWidget {
 
               const SizedBox(height: 40),
 
-              _field(provider.nameController, "Full Name"),
+              customTextField(provider.nameController, "Full Name"),
               const SizedBox(height: 16),
 
-              _field(provider.emailController, "Email"),
+              customTextField(provider.emailController, "Email"),
               const SizedBox(height: 16),
 
-              _field(provider.numberController, "Phone Number"),
+              customTextField(provider.numberController, "Phone Number"),
               const SizedBox(height: 16),
 
-              _field(
+              customTextField(
                 provider.passwordController,
                 "Password",
                 obscure: provider.obscurePassword,
@@ -53,7 +53,7 @@ class SignUpScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              _field(
+              customTextField(
                 provider.confirmPasswordController,
                 "Confirm Password",
                 obscure: provider.obscureConfirmPassword,
@@ -61,14 +61,14 @@ class SignUpScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              _field(
+              customTextField(
                 provider.companyController,
                 "Company Name (Optional)",
               ),
 
               const SizedBox(height: 16),
 
-              _field(
+              customTextField(
                 provider.websiteController,
                 "Website (Optional)",
               ),
@@ -94,33 +94,6 @@ class SignUpScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _field(
-      TextEditingController controller,
-      String hint, {
-        bool obscure = false,
-      }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.08),
-        ),
-      ),
-      child: TextField(
-        controller: controller,
-        obscureText: obscure,
-        style: const TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white38),
         ),
       ),
     );

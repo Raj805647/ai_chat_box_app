@@ -1,6 +1,6 @@
 class AppConfig {
   static const String apiTestUrl = "http://192.168.1.12:8000/api";
-  static const String apiProdUrl = "http://192.168.1.12:8000/api";
+  static const String apiProdUrl = "https://ai-avatar-backend-production.up.railway.app/docs#/";
   static const String imageUrl = "http://192.168.1.12:8000";
   static const String apiTestKey = "";
   static const String apiProdKey = "";

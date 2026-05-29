@@ -34,6 +34,28 @@ class AuthRepository extends BaseRepository {
     });
   }
 
+  //api integration
+  Future<Result<dynamic>> sendAiMessage(Map<String,dynamic> body, String apiKey) {
+    return safeApiCall(() async {
+
+      final response = await apiClient.postDio(
+        "https://api.openai.com/v1/chat/completions",
+
+        requiresAuth: false,
+        headers: {
+          "Authorization":
+          "Bearer $apiKey",
+          "Content-Type":
+          "application/json",
+        },
+
+        body: body
+      );
+
+      return response.data;
+    });
+  }
+
   Future<Result<dynamic>> userProfile() {
     return safeApiCall(() async {
       final response = await apiClient.getDio(AppConfig.actionProfile);
